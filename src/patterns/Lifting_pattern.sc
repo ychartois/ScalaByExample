@@ -20,27 +20,23 @@ object Lifting_pattern {
   
   // Source: Principles of Reactive Programming - Coursera
   
-  /**
-  * We define the function that lift the value
-  */
+  /*************************************
+  * 								CODE
+  **************************************/	
+  // We define the function that lift the value
   implicit class FutureCompanionOps[T](val f: Future.type) extends AnyVal {
     def always[T](value: T): Future[T] = future { value } // <-- Returns a future that is always completed with `value`.
   }
   
-  /**
-  * We define a fake cache and a fake http server request
-  */
+  // We define a fake cache and a fake http server request
   val cache = List("1")                           //> cache  : List[String] = List(1)
   def askServer( request: String ) = "A http request that can take some times"
                                                   //> askServer: (request: String)String
   
-  /**
-  * If the value is in the cache, we return the value from the cache which is lifted
-  * by the "always" method
-  * Otherwise we return the Future which will have the server return
-  */
+  // If the value is in the cache, we return the value from the cache which is lifted
+  // by the "always" method
+  // Otherwise we return the Future which will have the server return
   def query(request: String): Future[String] =
   	if ( cache.contains(request) ) Future.always( cache.head )
   	else Future { askServer(request) }        //> query: (request: String)scala.concurrent.Future[String]
-  
 }
